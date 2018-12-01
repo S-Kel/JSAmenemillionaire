@@ -1,0 +1,40 @@
+<script>
+    // 2. LOCAL STORAGE
+    const LocalStore = function() {}
+    LocalStore.prototype.setItem = (key, item) => {
+        let itemString = JSON.stringify(item);
+        localStorage.setItem(key, itemString);
+    }
+    LocalStore.prototype.getItem = (item) => {
+        return JSON.parse(localStorage.getItem(item));
+    }
+    LocalStore.prototype.removeItem = function(item) {
+        localStorage.removeItem(item);
+    }
+
+    // DOCUMENT READY
+    document.addEventListener("DOMContentLoaded", (evt) => {
+        //do work
+        let ls = new LocalStore();
+        const doc = document.body;
+        person = {
+            name: 'John Doe',
+            freq_url: 'google.com',
+            path: '=/',
+            naught: 'porbhub'
+        };
+
+        ls.setItem('personx', person);
+        let user = ls.getItem('personx');
+
+        console.log(user);
+        let container = `<div>${user.name}`;
+        let ul = '<ol>';
+        ul += `<li>Frequently visited Site: <span style="color: dodgerBlue;">${user.freq_url}<span></li>`;
+        ul += `<li>XXX Rate visited Site: <span style="color: red;">${user.naught}<span></li>`;
+        ul += '</ol>';
+
+        container += ul; //`<h5>${ul}</h5>`;
+        doc.innerHTML += container;
+    });
+</script>

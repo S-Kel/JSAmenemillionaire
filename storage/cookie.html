@@ -1,0 +1,24 @@
+<script>
+    // 1. COOKIE STORAGE
+    function Cookie() {}
+
+    Cookie.prototype.setCookie = (key, value) => {
+        document.cookie = `${key}=${value}`;
+    }
+    Cookie.prototype.deleteCookie = (key) => {
+        document.cookie = '${key}='
+    }
+    Cookie.prototype.getCookie = (key) => {
+        return document.cookie.split(';')
+            .find(pair => pair.includes(key))
+            .split('=')[1];
+    }
+    document.addEventListener("DOMContentLoaded", (evt) => {
+        //do work
+        let cookie = new Cookie();
+        cookie.setCookie('visited', 'google.com;path=/;naughty=porbhub');
+        cookie.setCookie('naughty', 'porbhub');
+        const doc = document.body;
+        doc.innerHTML += `<h1>${cookie.getCookie('visited')}</h1>`;
+    });
+</script>

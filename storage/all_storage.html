@@ -1,0 +1,111 @@
+<style>
+    h1 {
+        padding: 10px 20px;
+        color: green;
+        margin: 20px;
+        background: #fafafa;
+    }
+    
+    div {
+        margin: 20px;
+        padding: 10px 20px;
+        background: #fafafa;
+    }
+    
+    input[type='submit'] {
+        margin: 20px;
+    }
+</style>
+<script>
+    // 1. COOKIE STORAGE
+    function Cookie() {}
+
+    Cookie.prototype.setCookie = (key, value) => {
+        document.cookie = `${key}=${value}`;
+    }
+    Cookie.prototype.deleteCookie = (key) => {
+        document.cookie = '${key}='
+    }
+    Cookie.prototype.getCookie = (key) => {
+            return document.cookie.split(';')
+                .find(pair => pair.includes(key))
+                .split('=')[1];
+        }
+        // 2. LOCAL STORAGE
+    const LocalStore = function() {}
+    LocalStore.prototype.setItem = (key, item) => {
+        let itemString = JSON.stringify(item);
+        localStorage.setItem(key, itemString);
+    }
+    LocalStore.prototype.getItem = (item) => {
+        return JSON.parse(localStorage.getItem(item));
+    }
+    LocalStore.prototype.removeItem = function(item) {
+        localStorage.removeItem(item);
+    }
+
+    // 3. SESSION STORAGE
+    const SessionStore = function() {}
+    SessionStore.prototype.setItem = (key, item) => {
+        let itemString = JSON.stringify(item);
+        sessionStorage.setItem(key, itemString);
+    }
+    SessionStore.prototype.getItem = (item) => {
+        try {
+            return JSON.parse(sessionStorage.getItem(item));
+        } catch (err) {
+            return `Error: ${err.messsage}`
+        }
+
+    }
+    SessionStore.prototype.removeItem = function(item) {
+        sessionStorage.removeItem(item);
+    }
+
+
+    // DOCUMENT READY
+    document.addEventListener("DOMContentLoaded", (evt) => {
+        //do work
+        let cookie = new Cookie();
+        let ls = new LocalStore();
+        let ss = new SessionStore();
+        const doc = document.body;
+        person = {
+            name: 'John Doe',
+            freq_url: 'google.com',
+            path: '=/',
+            naught: 'porbhub'
+        };
+        //do work
+
+        cookie.setCookie('visited', 'google.com;path=/;naughty=porbhub');
+        cookie.setCookie('naughty', 'porbhub');
+
+        ls.setItem('personx', person);
+        ss.setItem(person.name, person.freq_url);
+
+        let ls_user = ls.getItem('personx');
+        let ss_user = ss.getItem(person.name);
+
+        console.log(ls_user);
+        let container = `<div>${ls_user.name}`;
+        let ul = '<ol>';
+        ul += `<li>Frequently visited Site: <span style="color: dodgerBlue;">${ls_user.freq_url}<span></li>`;
+        ul += `<li>XXX Rate visited Site: <span style="color: red;">${ls_user.naught}<span></li>`;
+        ul += '</ol>';
+
+        container += ul; //`<h5>${ul}</h5>`;
+        doc.innerHTML += container;
+
+        console.log(ss_user);
+        doc.innerHTML += `<h1>${ss_user}</h1>`;
+        doc.innerHTML += '<input type="submit" value"submit" id="btn">';
+        // doc.innerHTML += '<a href="index.html">Go Here</a>';
+
+        document.getElementById('btn').addEventListener('click', () => {
+            window.location = 'http://google.com';
+        });
+    });
+</script>
+<a href="index.html">Go Here</a>
+<a href="http://google.com">Google Here</a>
